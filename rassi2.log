@@ -1,0 +1,658 @@
+   This run of MOLCAS is using the pymolcas driver
+
+                             OPE
+                             OPE          NMOL  CASOP  ENMOLC A   SO
+                 OPE        NMOLC        AS  OP EN  MO LC     AS  OP
+                OPENM       OL CA        SO  PE NM  OL CA     SOP EN
+                OP EN      MO   LC       AS  OP ENMOL  CASO   PENMOL
+                OP  EN     MO   LC       AS  OP EN     MO     LC ASO
+               OP   E  NMOL  C  AS       OP  EN MO     LC     AS  OP
+               OP  E   NMO   LC AS        OPEN  MO     LCASOP EN   M
+               O  PEN   MO  LCA  SO
+            OPE   NMO   L   CAS    OP
+        OPENMOL  CASOP     ENMOL   CASOPE
+     OPENMOLCA   SOPENMOLCASOPEN   MOLCASOPE
+    OPENMOLCAS   OP           EN   MOL    CAS
+    OPENMOLCAS       OP  ENM        O     LCA
+    OPENMOLCAS    OPEN  MOLCASO     P  E  NMO
+    OPENMOLCAS     OP               E  N  MOL
+    OPENMOLCA   SO           PENM   O  L  CAS    OPEN    MO    LCAS
+    OPENMOLCA   SOP           ENM   O  L  CAS   OP  EN  MOLC  AS   O
+    OPENMOLCA   SOPE           NM      O  LCA   S      OP  EN MO
+    OPENMOLC                AS         O  PEN   M      OL  CA  SOPE
+    OPENMO        LCASOPE  NMOL        C  ASO   P      ENMOLC     AS
+    OPE     NMO      LCA  SO     P     E   NM   OL  CA SO  PE N   MO
+          OPENMOLCA            SOPE   NMO        LCAS  O    P  ENMO
+     OPENMOLCASOPENMOLCASOPENMOLCASOPENMOLCA
+        OPENMOLCASOPENMOLCASOPENMOLCASOPE
+            OPENMOLCASOPENMOLCASOPENM
+               OPENMOLCASOPENMOLCA        version: 18.09
+                   OPENMOLCASO
+                       OPE                tag: 1051-g4b0d97b-dirty
+
+ OpenMolcas is free software; you can redistribute it and/or modify it
+ under the terms of the GNU Lesser General Public License version 2.1.
+ OpenMolcas is distributed in the hope that it will be useful, but it
+ is provided "as is" and without any express or implied warranties.
+ For more details see the full text of the license in the file
+ LICENSE or in <http://www.gnu.org/licenses/>.
+
+                 Copyright (C) The OpenMolcas Authors
+           For the author list and the recommended citation,
+                   consult the file CONTRIBUTORS.md
+
+           *************************************************
+           * pymolcas version py2.06                       *
+           *   build d99115e7d466c38ed92aee3fc3c15349      *
+           *   (after the EMIL interpreter by V. Veryazov) *
+           *************************************************
+
+configuration info
+------------------
+C Compiler ID: Intel
+C flags: -std=gnu99
+Fortran Compiler ID: Intel
+Fortran flags: -fpp -i8 -r8 -heap-arrays
+Definitions: _MOLCAS_;_I8_;_LINUX_;_MKL_
+Parallel: OFF (GA=OFF)
+
+
+   ----------------------------------------------------------------------------------
+  |
+  |           Project: rassi
+  |    Submitted from: /proj/uuxray/kth/co/ion-xas/further-analysis/shift-intensities
+  |      Scratch area: /scratch/local/rassi
+  |   Save outputs to: /proj/uuxray/kth/co/ion-xas/further-analysis/shift-intensities
+  |            Molcas: /proj/uuxray/progs/exact/omolcas
+  |
+  | Scratch area is empty
+  |
+  |    MOLCAS_DRIVER = /proj/uuxray/progs/exact/omolcas/sbin/pymolcas
+  |    MOLCAS_NPROCS = 1
+  |    MOLCAS_SOURCE = /proj/uuxray/progs/exact/omolcas
+  | MOLCAS_STRUCTURE = 0
+  |
+   ----------------------------------------------------------------------------------
+
+++ ---------   Input file   ---------
+
+&GATEWAY
+SYMMETRY
+YZ Z
+Basis set
+C.aug-cc-pvtz
+C1   0.000000  0.000000  0.000000 Angstrom
+End of basis
+Basis set
+O.aug-cc-pvtz
+O1  1.100000  0.000000  0.000000 Angstrom
+End of basis
+RICD
+End of input
+
+&SEWARD
+
+>>> COPY $CurrDir/car-012.gs.JobMix JOB001
+
+>>> COPY $CurrDir/car-012.ce.JobMix JOB002
+
+&RASSI
+Ejob
+NROF jobiphs
+2 All
+CIPRint
+
+-- ----------------------------------
+
+--- Start Module: gateway at Tue Nov 12 11:23:35 2019 ---
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+
+                                              &GATEWAY
+
+                                   only a single process is used
+                       available to each process: 3.0 GB of memory, 1 thread?
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+++    Symmetry information:
+      ---------------------
+ 
+                    --- Group Generators ---
+                    Rotation around the x-axis  
+                    Reflection in the xy-plane  
+ 
+                    Character Table for C2v
+ 
+                             E   C2(x) s(xy) s(xz)
+                    a1       1     1     1     1  x
+                    b2       1    -1     1    -1  y, xy, Rz
+                    a2       1     1    -1    -1  yz, Rx, I
+                    b1       1    -1    -1     1  z, xz, Ry
+--
+ 
+ 
+++    Basis set information:
+      ----------------------
+ 
+ 
+      Basis set label: C.AUG-CC-PVTZ.........
+ 
+      Electronic valence basis set:
+      ------------------
+      Associated Effective Charge   6.000000 au
+      Associated Actual Charge      6.000000 au
+      Nuclear Model: Point charge
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s      11       5        X                  
+         p       6       4        X                  
+         d       3       3                 X         
+         f       2       2                 X         
+ 
+ 
+      Basis set label: O.AUG-CC-PVTZ.........
+ 
+      Electronic valence basis set:
+      ------------------
+      Associated Effective Charge   8.000000 au
+      Associated Actual Charge      8.000000 au
+      Nuclear Model: Point charge
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s      11       5        X                  
+         p       6       4        X                  
+         d       3       3                 X         
+         f       2       2                 X         
+--
+ 
+ 
+++    Molecular structure info:
+      -------------------------
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      C1               0.000000       0.000000       0.000000              0.000000       0.000000       0.000000
+        2      O1               2.078699       0.000000       0.000000              1.100000       0.000000       0.000000
+--
+ 
+ 
+            Nuclear Potential Energy             23.09136920 au
+ 
+--- Stop Module: gateway at Tue Nov 12 11:23:37 2019 /rc=_RC_ALL_IS_WELL_ ---
+*** files: rassi.RICDLib xmldump
+    saved to directory /proj/uuxray/kth/co/ion-xas/further-analysis/shift-intensities
+--- Module gateway spent 1 second ---
+
+--- Start Module: seward at Tue Nov 12 11:23:37 2019 ---
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+
+                                              &SEWARD
+
+                                   only a single process is used
+                       available to each process: 3.0 GB of memory, 1 thread?
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Velocity integrals
+                  Orbital angular momentum around ( 1.1877  0.0000  0.0000 )
+                  Velocity quadrupole around ( 1.1877  0.0000  0.0000 )
+                  RI decomposed two-electron repulsion integrals stored Cholesky style
+                   - acCD auxiliary basis
+                   - CD Threshold:   0.10E-03
+ 
+                   Integrals are discarded if absolute value <: 0.10E-13
+                   Integral cutoff threshold is set to       <: 0.10E-15
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+            Nuclear Potential Energy             23.09136920 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a1   b2   a2   b1 
+      Basis functions           38   22   10   22
+ 
+ 
+  Input file to MOLDEN was generated!
+ 
+--- Stop Module: seward at Tue Nov 12 11:23:38 2019 /rc=_RC_ALL_IS_WELL_ ---
+*** files: rassi.GssOrb rassi.guessorb.h5 rassi.guessorb.molden xmldump
+    saved to directory /proj/uuxray/kth/co/ion-xas/further-analysis/shift-intensities
+--- Module seward spent 1 second ---
+
+>>> COPY /proj/uuxray/kth/co/ion-xas/further-analysis/shift-intensities/car-012.gs.JobMix JOB001
+
+>>> COPY /proj/uuxray/kth/co/ion-xas/further-analysis/shift-intensities/car-012.ce.JobMix JOB002
+
+*** symbolic link created: INPORB -> rassi.GssOrb
+--- Start Module: rassi at Tue Nov 12 11:23:38 2019 ---
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+
+                                               &RASSI
+
+                                   only a single process is used
+                       available to each process: 3.0 GB of memory, 1 thread?
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+      ********************************************************************************
+      *                                                                              *
+      *                             General data section                             *
+      *                                                                              *
+      ********************************************************************************
+ 
+   Specific data for JOBIPH file 
+ JOB001                                                                         
+                                                  
+   -------------------------------------
+ 
+   Header from SEWARD:
+                                                                               
+        Integrals generated by seward 4.2.0  , Tue Nov 12 11:07:24 2019        
+ 
+   CASSCF title (first line only):
+       (No title given)                                                        
+ 
+   STATE IRREP:                             1
+   SPIN MULTIPLICITY:                       2
+   ACTIVE ELECTRONS:                        3
+   MAX RAS1 HOLES:                          1
+   MAX RAS3 ELECTRONS:                      0
+   NR OF CONFIG:                            4
+ 
+   Specific data for JOBIPH file 
+ JOB002                                                                         
+                                                  
+   -------------------------------------
+ 
+   Header from SEWARD:
+                                                                               
+        Integrals generated by seward 4.2.0  , Tue Nov 12 11:07:24 2019        
+ 
+   CASSCF title (first line only):
+       (No title given)                                                        
+ 
+   STATE IRREP:                             2
+   SPIN MULTIPLICITY:                       2
+   ACTIVE ELECTRONS:                        3
+   MAX RAS1 HOLES:                          1
+   MAX RAS3 ELECTRONS:                      0
+   NR OF CONFIG:                            3
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    WARNING: EJOB used when HEFF is available, possible                  ###
+ ###    extra interaction between states is ignored!                         ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+ 
+   The following data are common to all the states:
+   ------------------------------------------------
+   (note: frozen counts as inactive, deleted as secondary)
+ 
+      Nr of irreps: 4
+ 
+                 Total     No./Irrep 
+      Irrep                  1   2   3   4
+                            a1  b2  a2  b1
+ 
+      INACTIVE       5       3   1   0   1
+      ACTIVE         4       2   1   0   1
+      SECONDARY     83      33  20  10  20
+      BASIS         92      38  22  10  22
+ 
+      RAS1           1       1   0   0   0
+      RAS2           3       1   1   0   1
+      RAS3           0       0   0   0   0
+ 
+        MATRIX ELEMENTS WILL BE COMPUTED FOR THE FOLLOWING ONE-ELECTRON OPERATOR
+ S, UNLESS ZERO BY SYMMETRY.
+   (Herm=Hermitian, Anti=Antihermitian, Sing=Singlet operator, Trip=Triplet oper
+ ator)
+     MLTPL  0   1 (HERMSING)     MLTPL  1   1 (HERMSING)     MLTPL  1   2 (HERMSING)
+     MLTPL  1   3 (HERMSING)     MLTPL  2   1 (HERMSING)     MLTPL  2   2 (HERMSING)
+     MLTPL  2   3 (HERMSING)     MLTPL  2   4 (HERMSING)     MLTPL  2   5 (HERMSING)
+     MLTPL  2   6 (HERMSING)     VELOCITY   1 (ANTISING)     VELOCITY   2 (ANTISING)
+     VELOCITY   3 (ANTISING)     ANGMOM     1 (ANTISING)     ANGMOM     2 (ANTISING)
+     ANGMOM     3 (ANTISING)     MLTPV  2   1 (ANTISING)     MLTPV  2   2 (ANTISING)
+     MLTPV  2   3 (ANTISING)     MLTPV  2   4 (ANTISING)     MLTPV  2   5 (ANTISING)
+     MLTPV  2   6 (ANTISING)
+ 
+       EIGENSTATES OF A SPIN-FREE HAMILTONIAN WILL BE COMPUTED BASED ON:
+ 
+  a Hamiltonian matrix assumed to be diagonal with energies read from the wavefu
+ nction file(s).
+  SO coupling elements will be added.
+       EIGENSTATES OF SPIN-ORBIT HAMILTONIAN WILL BE COMPUTED
+        MATRIX ELEMENTS OVER SPIN EIGENSTATES FOR:
+     MLTPL  0   1 (HERMSING)     MLTPL  1   1 (HERMSING)     MLTPL  1   2 (HERMSING)
+     MLTPL  1   3 (HERMSING)     MLTPL  2   1 (HERMSING)     MLTPL  2   2 (HERMSING)
+     MLTPL  2   3 (HERMSING)     MLTPL  2   4 (HERMSING)     MLTPL  2   5 (HERMSING)
+     MLTPL  2   6 (HERMSING)     VELOCITY   1 (ANTISING)     VELOCITY   2 (ANTISING)
+     VELOCITY   3 (ANTISING)     ANGMOM     1 (ANTISING)     ANGMOM     2 (ANTISING)
+     ANGMOM     3 (ANTISING)     MLTPV  2   1 (ANTISING)     MLTPV  2   2 (ANTISING)
+     MLTPV  2   3 (ANTISING)     MLTPV  2   4 (ANTISING)     MLTPV  2   5 (ANTISING)
+     MLTPV  2   6 (ANTISING)
+ 
+  Nr of states:                     3
+ 
+   State:        1   2   3
+  JobIph:        1   2   2
+ Root nr:        1   1   2
+  READCI called for state                      1
+  This is on JobIph nr.                     1
+  JobIph file name:
+ JOB001                                                                         
+                                                  
+  It is root nr.                     1
+  Its length NCI=                     4
+  Its symmetry  =                     1
+  Spin multiplic=                     2
+  Occupation of active orbitals, and spin coupling
+  of open shells. (u,d: Spin up or down).
+  SGUGA info is (Midvert:IsyUp:UpperWalk/LowerWalk)
+   Conf   SGUGA info  Occupation       Coef       Weight                        
+  
+      1 ( 1:1:  1/  1)  2u 0 0        0.06682      0.00446
+      2 ( 1:1:  1/  2)  u2 0 0       -0.99551      0.99103
+ 
+ *******************************************************************************
+ *
+  READCI called for state                      1
+  This is on JobIph nr.                     1
+  JobIph file name:
+ JOB001                                                                         
+                                                  
+  It is root nr.                     1
+  Its length NCI=                     4
+  Its symmetry  =                     1
+  Spin multiplic=                     2
+  Occupation of active orbitals, and spin coupling
+  of open shells. (u,d: Spin up or down).
+  SGUGA info is (Midvert:IsyUp:UpperWalk/LowerWalk)
+   Conf   SGUGA info  Occupation       Coef       Weight                        
+  
+      1 ( 1:1:  1/  1)  2u 0 0        0.06682      0.00446
+      2 ( 1:1:  1/  2)  u2 0 0       -0.99551      0.99103
+ 
+ *******************************************************************************
+ *
+  READCI called for state                      2
+  This is on JobIph nr.                     2
+  JobIph file name:
+ JOB002                                                                         
+                                                  
+  It is root nr.                     1
+  Its length NCI=                     3
+  Its symmetry  =                     2
+  Spin multiplic=                     2
+  Occupation of active orbitals, and spin coupling
+  of open shells. (u,d: Spin up or down).
+  SGUGA info is (Midvert:IsyUp:UpperWalk/LowerWalk)
+   Conf   SGUGA info  Occupation       Coef       Weight                        
+  
+      2 ( 2:2:  1/  2)  ud u 0        0.93645      0.87693
+      3 ( 3:2:  1/  1)  uu d 0        0.35081      0.12307
+ 
+ *******************************************************************************
+ *
+  READCI called for state                      3
+  This is on JobIph nr.                     2
+  JobIph file name:
+ JOB002                                                                         
+                                                  
+  It is root nr.                     2
+  Its length NCI=                     3
+  Its symmetry  =                     2
+  Spin multiplic=                     2
+  Occupation of active orbitals, and spin coupling
+  of open shells. (u,d: Spin up or down).
+  SGUGA info is (Midvert:IsyUp:UpperWalk/LowerWalk)
+   Conf   SGUGA info  Occupation       Coef       Weight                        
+  
+      2 ( 2:2:  1/  2)  ud u 0        0.35081      0.12307
+      3 ( 3:2:  1/  1)  uu d 0       -0.93645      0.87693
+ 
+ *******************************************************************************
+ *
+  READCI called for state                      1
+  This is on JobIph nr.                     1
+  JobIph file name:
+ JOB001                                                                         
+                                                  
+  It is root nr.                     1
+  Its length NCI=                     4
+  Its symmetry  =                     1
+  Spin multiplic=                     2
+  Occupation of active orbitals, and spin coupling
+  of open shells. (u,d: Spin up or down).
+  SGUGA info is (Midvert:IsyUp:UpperWalk/LowerWalk)
+   Conf   SGUGA info  Occupation       Coef       Weight                        
+  
+      1 ( 1:1:  1/  1)  2u 0 0        0.06682      0.00446
+      2 ( 1:1:  1/  2)  u2 0 0       -0.99551      0.99103
+ 
+ *******************************************************************************
+ *
+  READCI called for state                      2
+  This is on JobIph nr.                     2
+  JobIph file name:
+ JOB002                                                                         
+                                                  
+  It is root nr.                     1
+  Its length NCI=                     3
+  Its symmetry  =                     2
+  Spin multiplic=                     2
+  Occupation of active orbitals, and spin coupling
+  of open shells. (u,d: Spin up or down).
+  SGUGA info is (Midvert:IsyUp:UpperWalk/LowerWalk)
+   Conf   SGUGA info  Occupation       Coef       Weight                        
+  
+      2 ( 2:2:  1/  2)  ud u 0        0.93645      0.87693
+      3 ( 3:2:  1/  1)  uu d 0        0.35081      0.12307
+ 
+ *******************************************************************************
+ *
+  READCI called for state                      3
+  This is on JobIph nr.                     2
+  JobIph file name:
+ JOB002                                                                         
+                                                  
+  It is root nr.                     2
+  Its length NCI=                     3
+  Its symmetry  =                     2
+  Spin multiplic=                     2
+  Occupation of active orbitals, and spin coupling
+  of open shells. (u,d: Spin up or down).
+  SGUGA info is (Midvert:IsyUp:UpperWalk/LowerWalk)
+   Conf   SGUGA info  Occupation       Coef       Weight                        
+  
+      2 ( 2:2:  1/  2)  ud u 0        0.35081      0.12307
+      3 ( 3:2:  1/  1)  uu d 0       -0.93645      0.87693
+ 
+ *******************************************************************************
+ *
+  READCI called for state                      2
+  This is on JobIph nr.                     2
+  JobIph file name:
+ JOB002                                                                         
+                                                  
+  It is root nr.                     1
+  Its length NCI=                     3
+  Its symmetry  =                     2
+  Spin multiplic=                     2
+  Occupation of active orbitals, and spin coupling
+  of open shells. (u,d: Spin up or down).
+  SGUGA info is (Midvert:IsyUp:UpperWalk/LowerWalk)
+   Conf   SGUGA info  Occupation       Coef       Weight                        
+  
+      2 ( 2:2:  1/  2)  ud u 0        0.93645      0.87693
+      3 ( 3:2:  1/  1)  uu d 0        0.35081      0.12307
+ 
+ *******************************************************************************
+ *
+  READCI called for state                      3
+  This is on JobIph nr.                     2
+  JobIph file name:
+ JOB002                                                                         
+                                                  
+  It is root nr.                     2
+  Its length NCI=                     3
+  Its symmetry  =                     2
+  Spin multiplic=                     2
+  Occupation of active orbitals, and spin coupling
+  of open shells. (u,d: Spin up or down).
+  SGUGA info is (Midvert:IsyUp:UpperWalk/LowerWalk)
+   Conf   SGUGA info  Occupation       Coef       Weight                        
+  
+      2 ( 2:2:  1/  2)  ud u 0        0.35081      0.12307
+      3 ( 3:2:  1/  1)  uu d 0       -0.93645      0.87693
+ 
+ *******************************************************************************
+ *
+ 
+  HAMILTONIAN MATRIX FOR THE ORIGINAL STATES:
+ 
+  Diagonal, with energies
+   -112.63277349   -112.18851489   -112.07857192
+ 
+      OVERLAP MATRIX FOR THE ORIGINAL STATES:
+ 
+  Diagonal, with elements
+      1.00000000      1.00000000      1.00000000
+ 
+::    RASSI State    1     Total energy:   -112.63277349
+::    RASSI State    2     Total energy:   -112.18851489
+::    RASSI State    3     Total energy:   -112.07857192
+ 
+ 
+ 
+      ****************************************************************************************************
+      *                                                                                                  *
+      *                                         Spin-free section                                        *
+      *                                                                                                  *
+      *                 Note: index according to input order, order according to energy.                 *
+      *                                                                                                  *
+      ****************************************************************************************************
+ 
+ 
+ 
+  SPIN-FREE ENERGIES:
+  (Shifted by EVAC (a.u.) =       -112.6327734852)
+ 
+ SF State       Relative EVAC(au)   Rel lowest level(eV)    D:o, cm**(-1)
+ 
+     1             0.0000000000        0.0000000000              0.0000
+     2             0.4442585978       12.0888922986          97503.4920
+     3             0.5542015668       15.0805928930         121633.1846
+ 
+++ Dipole transition strengths (spin-free states):
+   -----------------------------------------------
+     for osc. strength at least  1.00000000E-05
+ 
+      From   To        Osc. strength     Einstein coefficients Ax, Ay, Az (sec-1)    Total A (sec-1)
+     -----------------------------------------------------------------------------------------------
+         1    2       5.12353564E-02  0.00000000E+00  3.24901958E+08  0.00000000E+00  3.24901958E+08
+         1    3       5.93421975E-02  0.00000000E+00  5.85612054E+08  0.00000000E+00  5.85612054E+08
+     -----------------------------------------------------------------------------------------------
+--
+ 
+++ Velocity transition strengths (spin-free states):
+   -------------------------------------------------
+     for osc. strength at least  1.00000000E-05
+ 
+      From   To        Osc. strength     Einstein coefficients Ax, Ay, Az (sec-1)    Total A (sec-1)
+     -----------------------------------------------------------------------------------------------
+         1    2       9.06228157E-02  0.00000000E+00  5.74672108E+08  0.00000000E+00  5.74672108E+08
+         1    3       6.11282360E-02  0.00000000E+00  6.03237381E+08  0.00000000E+00  6.03237381E+08
+     -----------------------------------------------------------------------------------------------
+--
+ 
+++ Length and velocity gauge comparison (spin-free states):
+   --------------------------------------------------------
+ 
+ --------------------------------------------------
+ A comparison between the dipole oscillator strengths in 
+ length and velocity gauge will be performed
+ 
+ All dipole oscillator differences above the tolerance of 
+  0.100000000000000       will be printed 
+ 
+ Due to basis set deficiency these oscillator may be problematic 
+ 
+ The tolerance is defined as ABS(1-O_l/O_v) 
+ O_l : dipole oscillator strength in length gauge
+ O_p : dipole oscillator strength in velocity gauge
+ --------------------------------------------------
+ 
+  Problematic transitions have been found
+ 
+      From   To       Difference (%) Osc. st. (len.) Osc. st. (vel.)
+     ---------------------------------------------------------------
+         1    2            43.463072  5.12353564E-02  9.06228157E-02
+     ---------------------------------------------------------------
+ 
+ Number of problematic transitions =                      1
+ 
+--
+ 
+ Electric-dipole - electric-octupole not included
+ Electric-dipole - magnetic-quadrupole not included
+ 
+ 
+      ****************************************************************************************************
+      *                                                                                                  *
+      *                                    Special properties section                                    *
+      *                                                                                                  *
+      ****************************************************************************************************
+ 
+ 
+++ I/O STATISTICS
+ 
+  I. General I/O information
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Unit  Name          Flsize      Write/Read            MBytes           Write/Read
+                      (MBytes)       Calls              In/Out           Time, sec.
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   1  SCRATCH           0.00 .       5/       6 .      0.0/      0.0 .       0/       0
+   2  ANNI              0.00 .       0/       0 .      0.0/      0.0 .       0/       0
+   3  RUNFILE          13.32 .     189/    1363 .      1.3/      9.9 .       0/       0
+   4  ONEINT            1.62 .       0/     333 .      0.0/    297.9 .       0/       0
+   5  JOB001            1.19 .       0/      65 .      0.0/      1.3 .       0/       0
+   6  JOB002            1.23 .       0/      71 .      0.0/      1.3 .       0/       0
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   *  TOTAL            17.36 .     194/    1838 .      1.3/    310.3 .       0/       0
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+  II. I/O Access Patterns
+  - - - - - - - - - - - - - - - - - - - -
+  Unit  Name               % of random
+                         Write/Read calls
+  - - - - - - - - - - - - - - - - - - - -
+   1  SCRATCH             80.0/ 100.0
+   2  ANNI                 0.0/   0.0
+   3  RUNFILE             28.6/  10.7
+   4  ONEINT               0.0/  81.1
+   5  JOB001               0.0/  87.7
+   6  JOB002               0.0/  84.5
+  - - - - - - - - - - - - - - - - - - - -
+--
+--- Stop Module: rassi at Tue Nov 12 11:23:38 2019 /rc=_RC_ALL_IS_WELL_ ---
+*** files: rassi.rassi.h5 xmldump
+    saved to directory /proj/uuxray/kth/co/ion-xas/further-analysis/shift-intensities
+
+    Timing: Wall=3.18 User=1.59 System=0.62
