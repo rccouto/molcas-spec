@@ -142,6 +142,8 @@ def main():
     # Get spectrum
     elif arg.typ == 'spec':
 
+        borh2ev=27.211385
+        
         if arg.file == 'all':
             logs=sorted(glob.iglob('*.log'))
         else:
@@ -151,8 +153,11 @@ def main():
             states= get_oscillator(logs[i])
             energy,nstates=get_energy(logs[i], "RASSI")
 
-        
-            print(states, energy)
+            for j in range(len(states)):
+                init=states[j][0].astype(int)
+                #print(init)
+                final=states[j][1].astype(int)
+                print(states[j][2], (energy[final-1]-energy[init-1])*borh2ev )
         
         
         
