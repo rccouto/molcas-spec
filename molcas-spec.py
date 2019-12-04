@@ -133,7 +133,9 @@ def main():
     # Prinf level
     f.add_option( '-p', '--print' , type = str, default = 'list')
     # Convolution functions
-    f.add_option( '-c', '--conv' , type = str, default = 'lorentzian')
+    f.add_option( '-c', '--conv' , type = str, default = 'gaussian')
+    # File name
+    f.add_option( '-n', '--name' , type = str, default = 'spec')   
     (arg, args) = f.parse_args(sys.argv[1:])
 
     if arg.typ == 'pec':
@@ -163,37 +165,68 @@ def main():
             logs=arg.file
             
         for i in range(len(logs)):
-            transitions=[]
+            trans=[]
             states= get_oscillator(logs[i])
             energy,nstates=get_energy(logs[i], "RASSI")
 
-            print("# E(eV) Osc. Str. (a.u.) -- %s" % logs[i])
-            for j in range(len(states)):
-                init=states[j][0].astype(int)
-                final=states[j][1].astype(int)
-
-                transitions.append((energy[final-1]-energy[init-1])*borh2ev)
-                transitions.append(states[j][2])
-
-                if arg.print == "bars":
-                    print(" %.4f  0.0000" % ((energy[final-1]-energy[init-1])*borh2ev) )
-                    print(" %.4f  %E" % ((energy[final-1]-energy[init-1])*borh2ev, states[j][2]))
-                    print(" %.4f  0.0000" % ((energy[final-1]-energy[init-1])*borh2ev) )
-        transitions=np.array(transitions).reshape(-1,2)
-        
-        if arg.print == "curve":
-            if arg.conv == "lorentzian":
-                gamma = 0.1240839
-                x,y = lorentzian(transitions[:,0], transitions[:,1], gamma, transitions[0,0]-10, transitions[0,0]+10 )
-                for i in range(len(x)):
-                    print("%s %s" % (x[i], y[i]))
+            if arg.print == "list" or arg.print == "all":
+                name=arg.name
+                output = "{a}-{b}-list.dat".format(a=name, b=logs[i].replace(".log", ""))
+                out=open(output, "w")
+                            
+                out.write("# E(eV) Osc. Str. (a.u.) -- %s - List of transitions\n " % logs[i])
+                for j in range(len(states)):
+                    init=states[j][0].astype(int)
+                    final=states[j][1].astype(int)
+                    out.write(" %.4f  %E \n" % ((energy[final-1]-energy[init-1])*borh2ev, states[j][2]))
+                out.close()
+                
+            if arg.print == "bars" or arg.print == "all":
+                name=arg.name
+                output = "{a}-{b}-bars.dat".format(a=name, b=logs[i].replace(".log", ""))
+                out=open(output, "w")
+                
+                out.write("# E(eV) Osc. Str. (a.u.) -- %s, Bars spectrum \n" % logs[i])
+                for j in range(len(states)):
+                    init=states[j][0].astype(int)
+                    final=states[j][1].astype(int)
                     
-            elif arg.conv == "gaussian":
-                sigma = 0.2
-                x,y = gaussian(transitions[:,0], transitions[:,1], sigma, transitions[0,0]-10, transitions[0,0]+10 )
-                for i in range(len(x)):
-                    print("%s %s" % (x[i], y[i]))     
-        
+                    out.write(" %.4f  0.0000 \n" % ((energy[final-1]-energy[init-1])*borh2ev) )
+                    out.write(" %.4f  %E \n" % ((energy[final-1]-energy[init-1])*borh2ev, states[j][2]))
+                    out.write(" %.4f  0.0000 \n" % ((energy[final-1]-energy[init-1])*borh2ev) )
+                out.close()
+                
+            if arg.print == "curve" or arg.print == "all":
+                for j in range(len(states)):
+                    init=states[j][0].astype(int)
+                    final=states[j][1].astype(int)
+                    trans.append((energy[final-1]-energy[init-1])*borh2ev)
+                    trans.append(states[j][2])
+                trans=np.array(trans).reshape(-1,2)
+                
+                if arg.conv == "lorentzian":
+                    name=arg.name
+                    output = "{a}-{b}-curve-loren.dat".format(a=name, b=logs[i].replace(".log", ""))
+                    out=open(output, "w")
+                    
+                    gamma = 0.1240839
+                    x,y = lorentzian(trans[:,0], trans[:,1], gamma, trans[0,0]-10, trans[0,0]+10 )
+                    out.write("# E(eV) Osc. Str. (a.u.) -- %s, Lorentzian Curve spectrum \n" % logs[i])
+                    for i in range(len(x)):
+                        out.write("%s %s\n" % (x[i], y[i]))
+                    out.close()
+                        
+                elif arg.conv == "gaussian":
+                    name=arg.name
+                    output = "{a}-{b}-curve-gauss.dat".format(a=name, b=logs[i].replace(".log", ""))
+                    out=open(output, "w")
+                        
+                    sigma = 0.2
+                    x,y = gaussian(trans[:,0], trans[:,1], sigma, trans[0,0]-10, trans[0,0]+10 )
+                    out.write("# E(eV) Osc. Str. (a.u.) -- %s, Gaussian Curve spectrum \n" % logs[i])
+                    for i in range(len(x)):
+                        out.write("%s %s\n" % (x[i], y[i]))     
+                    out.close()
         
 
         
