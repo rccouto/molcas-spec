@@ -64,23 +64,14 @@ def get_distance(atom, crd):
                 C.append(z)    # Save the coordinates in a List
         amp.append(C[atom*3+crd])
         del C[:]
-            
-        # Calculating the Amplitude
-        #for i in range(len(amp)):
-        #    print amp
-        
     return amp
 
 
 
 def get_oscillator(file):
     O=[]
-    #states=[]
-
     data = re.compile(r'(\d+)\s+(\d+)\s+(\d+\.\d*(?:[Ee]-?\d+)?)')
-
     flag=False
-
     with open(file, "r") as log:
         for line in log:
             if line.startswith("++ Velocity transition strengths"):
@@ -98,10 +89,28 @@ def get_oscillator(file):
                     break
     log.close()
     states=np.array(O).reshape(-1,3)
-    
     return states
 
 
+def lorentzian(x,y,gamma,initial,final,n=1000):
+    import numpy
+    step=(x[-1]-x[0])/n
+    xi=numpy.arange(initial,final,step)
+    yi=numpy.zeros(len(xi))
+    for i in range(len(xi)):
+        for k in range(len(y)):
+            yi[i] = yi[i] + y[k] * gamma**2 / ( (xi[i]-x[k])**2 + gamma**2 )
+    return xi,yi
+
+def gaussian(x,y,sigma,initial,final,n=1000):
+    import numpy
+    step=(x[-1]-x[0])/n
+    xi=numpy.arange(initial,final,step)
+    yi=numpy.zeros(len(xi))
+    for i in range(len(xi)):
+        for k in range(len(y)):
+            yi[i] = yi[i] + y[k] * numpy.exp( -(xi[i]-x[k])**2 / sigma**2 )
+    return xi,yi
 
 
 
@@ -123,6 +132,8 @@ def main():
     f.add_option( '-f', '--file' , type = str, default = 'all')
     # Prinf level
     f.add_option( '-p', '--print' , type = str, default = 'list')
+    # Convolution functions
+    f.add_option( '-c', '--conv' , type = str, default = 'lorentzian')
     (arg, args) = f.parse_args(sys.argv[1:])
 
     if arg.typ == 'pec':
@@ -152,6 +163,7 @@ def main():
             logs=arg.file
             
         for i in range(len(logs)):
+            transitions=[]
             states= get_oscillator(logs[i])
             energy,nstates=get_energy(logs[i], "RASSI")
 
@@ -160,18 +172,27 @@ def main():
                 init=states[j][0].astype(int)
                 final=states[j][1].astype(int)
 
-                if arg.print == "list":
-                    print(" %.4f  %E" % ((energy[final-1]-energy[init-1])*borh2ev, states[j][2]))
+                transitions.append((energy[final-1]-energy[init-1])*borh2ev)
+                transitions.append(states[j][2])
 
-                elif arg.print == "bars":
+                if arg.print == "bars":
                     print(" %.4f  0.0000" % ((energy[final-1]-energy[init-1])*borh2ev) )
                     print(" %.4f  %E" % ((energy[final-1]-energy[init-1])*borh2ev, states[j][2]))
                     print(" %.4f  0.0000" % ((energy[final-1]-energy[init-1])*borh2ev) )
-
-                elif arg.print == "curve":
-                    
-                
+        transitions=np.array(transitions).reshape(-1,2)
         
+        if arg.print == "curve":
+            if arg.conv == "lorentzian":
+                gamma = 0.1240839
+                x,y = lorentzian(transitions[:,0], transitions[:,1], gamma, transitions[0,0]-10, transitions[0,0]+10 )
+                for i in range(len(x)):
+                    print("%s %s" % (x[i], y[i]))
+                    
+            elif arg.conv == "gaussian":
+                sigma = 0.2
+                x,y = gaussian(transitions[:,0], transitions[:,1], sigma, transitions[0,0]-10, transitions[0,0]+10 )
+                for i in range(len(x)):
+                    print("%s %s" % (x[i], y[i]))     
         
         
 
