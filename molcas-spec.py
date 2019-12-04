@@ -121,6 +121,8 @@ def main():
     f.add_option( '-l', '--level' , type = str, default = None)
     # OpenMolcas log file
     f.add_option( '-f', '--file' , type = str, default = 'all')
+    # Prinf level
+    f.add_option( '-p', '--print' , type = str, default = 'list')
     (arg, args) = f.parse_args(sys.argv[1:])
 
     if arg.typ == 'pec':
@@ -153,11 +155,22 @@ def main():
             states= get_oscillator(logs[i])
             energy,nstates=get_energy(logs[i], "RASSI")
 
+            print("# E(eV) Osc. Str. (a.u.) -- %s" % logs[i])
             for j in range(len(states)):
                 init=states[j][0].astype(int)
-                #print(init)
                 final=states[j][1].astype(int)
-                print(states[j][2], (energy[final-1]-energy[init-1])*borh2ev )
+
+                if arg.print == "list":
+                    print(" %.4f  %E" % ((energy[final-1]-energy[init-1])*borh2ev, states[j][2]))
+
+                elif arg.print == "bars":
+                    print(" %.4f  0.0000" % ((energy[final-1]-energy[init-1])*borh2ev) )
+                    print(" %.4f  %E" % ((energy[final-1]-energy[init-1])*borh2ev, states[j][2]))
+                    print(" %.4f  0.0000" % ((energy[final-1]-energy[init-1])*borh2ev) )
+
+                elif arg.print == "curve":
+                    
+                
         
         
         
