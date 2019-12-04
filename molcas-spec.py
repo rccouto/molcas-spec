@@ -3,52 +3,46 @@
 import math, re, optparse, operator, os, glob
 import numpy as np
 
-def get_energy(files, level):
+def get_energy(file, level):
     E=[]
     c=0
-
-    if files == 'all':
-        logs=sorted(glob.iglob('*.log'))
-    else: 
-        logs= [files]
     
-    for file in logs:
-        energy=0.0
-        for i in open( file ).readlines():
-            
-            if level == "RASSCF":
-                if re.search(r"::    RASSCF root number", i) is not None: # Find energy in .log
-                    words = i.split()
-                    energy = float( words[7] )  # Energy is the sixth word
-                    E.append(energy)
+    energy=0.0
+    for i in open( file ).readlines():
+        
+        if level == "RASSCF":
+            if re.search(r"::    RASSCF root number", i) is not None: # Find energy in .log
+                words = i.split()
+                energy = float( words[7] )  # Energy is the sixth word
+                E.append(energy)
                     
-            elif level == "CASPT2":
-                if re.search(r"::    CASPT2 Root", i) is not None: # Find energy in .log
-                    words = i.split()
-                    energy = float( words[6] )  # Energy is the sixth word
-                    E.append(energy)
+        elif level == "CASPT2":
+            if re.search(r"::    CASPT2 Root", i) is not None: # Find energy in .log
+                words = i.split()
+                energy = float( words[6] )  # Energy is the sixth word
+                E.append(energy)
                     
-            elif level == "MS-CASPT2":
-                if re.search(r":    MS-CASPT2 Root", i) is not None: # Find energy in .log
-                    words = i.split()
-                    energy = float( words[6] )  # Energy is the sixth word
-                    E.append(energy)
+        elif level == "MS-CASPT2":
+            if re.search(r":    MS-CASPT2 Root", i) is not None: # Find energy in .log
+                words = i.split()
+                energy = float( words[6] )  # Energy is the sixth word
+                E.append(energy)
                 
-            elif level == "RASSI":
-                if re.search(r"::    RASSI State ", i) is not None: # Find energy in .log
-                    words = i.split()
-                    energy = float( words[6] )  # Energy is the sixth word
-                    E.append(energy)
-            else:
-                print("You forgot something, right? Maybe... level of calculation???")
-                exit()
+        elif level == "RASSI":
+            if re.search(r"::    RASSI State ", i) is not None: # Find energy in .log
+                words = i.split()
+                energy = float( words[6] )  # Energy is the sixth word
+                E.append(energy)
+        else:
+            print("You forgot something, right? Maybe... level of calculation???")
+            exit()
             
-        if energy == 0.0:
-            E.append(energy)
+    if energy == 0.0:
+        E.append(energy)
             
-        c=c+1
-        if c == 1:
-            nstates=len(E)
+    c=c+1
+    if c == 1:
+        nstates=len(E)
     return E, nstates
 
 
@@ -79,46 +73,33 @@ def get_distance(atom, crd):
 
 
 
-
-
-
-
-def get_oscillator(files):
+def get_oscillator(file):
     O=[]
-    if files == 'all':
-        logs=sorted(glob.iglob('*.log'))
-    else: 
-        logs= [files]
+    #states=[]
 
     data = re.compile(r'(\d+)\s+(\d+)\s+(\d+\.\d*(?:[Ee]-?\d+)?)')
 
-    for file in logs:
-        flag=False
+    flag=False
 
-        with open(file, "r") as log:
-            for line in log:
-                if line.startswith("++ Velocity transition strengths"):
-                    flag=True
-                if flag:
+    with open(file, "r") as log:
+        for line in log:
+            if line.startswith("++ Velocity transition strengths"):
+                flag=True
+            if flag:
+                if data.search(line):
                     if data.search(line):
-                        if data.search(line):
-                             i = float(data.search(line).group(1))   # initial state
-                             O.append(i)
-                             f = float(data.search(line).group(2))   # final state
-                             O.append(f)
-                             osc = float(data.search(line).group(3)) # oscillator strength
-                             O.append(osc)
-                    if line.startswith("++ Length and velocity gauge comparison (spin-free states):"):
-                        break
-        log.close()
+                        i = float(data.search(line).group(1))   # initial state
+                        O.append(i)
+                        f = float(data.search(line).group(2))   # final state
+                        O.append(f)
+                        osc = float(data.search(line).group(3)) # oscillator strength
+                        O.append(osc)
+                if line.startswith("++ Length and velocity gauge comparison (spin-free states):"):
+                    break
+    log.close()
     states=np.array(O).reshape(-1,3)
-
+    
     return states
-
-
-
-
-
 
 
 
@@ -160,11 +141,18 @@ def main():
 
     # Get spectrum
     elif arg.typ == 'spec':
-        states = get_oscillator(arg.file)
-        energy,nstates=get_energy(arg.file, "RASSI")
+
+        if arg.file == 'all':
+            logs=sorted(glob.iglob('*.log'))
+        else:
+            logs=arg.file
+            
+        for i in range(len(logs)):
+            states= get_oscillator(logs[i])
+            energy,nstates=get_energy(logs[i], "RASSI")
 
         
-        print(states)
+            print(states, energy)
         
         
         
