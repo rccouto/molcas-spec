@@ -1,13 +1,18 @@
-#!/usr/bin python3 
+#!/usr/bin/env python3
 
 import math, re, optparse, operator, os, glob
 import numpy as np
 
-def get_energy(level):
+def get_energy(files, level):
     E=[]
     c=0
-    files=sorted(glob.iglob('*.log')) # Used to get all files in numerical order
-    for file in files:
+
+    if files == 'all':
+        logs=sorted(glob.iglob('*.log'))
+    else: 
+        logs= [files]
+    
+    for file in logs:
         energy=0.0
         for i in open( file ).readlines():
             
@@ -74,45 +79,49 @@ def get_distance(atom, crd):
 
 
 
+
+
+
+
 def get_oscillator(files):
     O=[]
     if files == 'all':
-        files=sorted(glob.iglob('*.log')) # Used to get all files in numerical order
+        logs=sorted(glob.iglob('*.log'))
+    else: 
+        logs= [files]
 
-    flag = re.compile(r'\s(-?\d?)\s+(-?\d?)\s+(-?\d?\.\d+)\s+(-?\d?\.\d+)\s+(-?\d?\.\d+) *$')
-        
-    for file in files:
-        for i in open( file ).readlines():
-            if "++ Velocity transition strengths" in i:
-                
-                if flag.search(i):
-                    ft = float(flag.search(i).group(1) ) # Get the X Coordinate
-                    #O.append(ft)
-                    tt = float(flag.search(i).group(2) ) # Get the Y Coordinate
-                    #O.append(tt)
-                    osc = float(flag.search(i).group(3) ) # Get the Z Coordinate
-                    #O.append(z)    # Save the coordinates in a List
-                    O.append( np.array( [ft, tt, osc] ) )
-        del C[:]
+    data = re.compile(r'(\d+)\s+(\d+)\s+(\d+\.\d*(?:[Ee]-?\d+)?)')
+
+    for file in logs:
+        flag=False
+
+        with open(file, "r") as log:
+            for line in log:
+                if line.startswith("++ Velocity transition strengths"):
+                    flag=True
+                if flag:
+                    if data.search(line):
+                        if data.search(line):
+                             i = float(data.search(line).group(1))   # initial state
+                             O.append(i)
+                             f = float(data.search(line).group(2))   # final state
+                             O.append(f)
+                             osc = float(data.search(line).group(3)) # oscillator strength
+                             O.append(osc)
+                    if line.startswith("++ Length and velocity gauge comparison (spin-free states):"):
+                        break
+        log.close()
+    states=np.array(O).reshape(-1,3)
+
+    return states
 
 
-                
-    return osc
 
-def get_cicoeff(level):
-    E=[]
-    c=0
-    files=sorted(glob.iglob('*.log')) # Used to get all files in numerical order
-    for file in files:
-        energy=0.0
-        for i in open( file ).readlines():
-            
-                if re.search(r"::    RASSCF root number", i) is not None: # Find energy in .log
-                    words = i.split()
-                    energy = float( words[7] )  # Energy is the sixth word
-                    E.append(energy)
 
-    return E, nstates
+
+
+
+
 
 
 # MAIN PROGRAM
@@ -148,10 +157,21 @@ def main():
                 print(energy[(nstates*i)+j], end=' ')
                 print(' ')
 
-    elif arg.typ == 'spec':
-        osc = get_oscillator (arg.file)
 
-    elif arg.typ == ' '
+    # Get spectrum
+    elif arg.typ == 'spec':
+        states = get_oscillator(arg.file)
+        energy,nstates=get_energy(arg.file, "RASSI")
+
+        
+        print(states)
+        
+        
+        
+
+        
+    elif arg.typ == 'help':
+        print("Do you know what do you wanna do? Apparently not. Choose the type of analysis, please!")
     
                 
 if __name__=="__main__":
