@@ -135,7 +135,9 @@ def main():
     # Convolution functions
     f.add_option( '-c', '--conv' , type = str, default = 'gaussian')
     # File name
-    f.add_option( '-n', '--name' , type = str, default = 'spec')   
+    f.add_option( '-n', '--name' , type = str, default = 'spec')
+    # File name
+    f.add_option( '-i', '--init' , type = int, default = '1')   
     (arg, args) = f.parse_args(sys.argv[1:])
 
     if arg.typ == 'pec':
@@ -174,11 +176,15 @@ def main():
                 output = "{a}-{b}-list.dat".format(a=name, b=logs[i].replace(".log", ""))
                 out=open(output, "w")
                             
-                out.write("# E(eV) Osc. Str. (a.u.) -- %s - List of transitions\n " % logs[i])
+                out.write("# E(eV) Osc. Str. (a.u.) -- %s - List of transitions \n" % logs[i])
                 for j in range(len(states)):
                     init=states[j][0].astype(int)
                     final=states[j][1].astype(int)
-                    out.write(" %.4f  %E \n" % ((energy[final-1]-energy[init-1])*borh2ev, states[j][2]))
+
+                    if init == arg.init:
+                        out.write(" %.4f  %E \n" % ((energy[final-1]-energy[init-1])*borh2ev, states[j][2]))
+                    elif arg.init == "00":
+                        out.write(" %.4f  %E \n" % ((energy[final-1]-energy[init-1])*borh2ev, states[j][2]))
                 out.close()
                 
             if arg.print == "bars" or arg.print == "all":
@@ -190,18 +196,20 @@ def main():
                 for j in range(len(states)):
                     init=states[j][0].astype(int)
                     final=states[j][1].astype(int)
-                    
-                    out.write(" %.4f  0.0000 \n" % ((energy[final-1]-energy[init-1])*borh2ev) )
-                    out.write(" %.4f  %E \n" % ((energy[final-1]-energy[init-1])*borh2ev, states[j][2]))
-                    out.write(" %.4f  0.0000 \n" % ((energy[final-1]-energy[init-1])*borh2ev) )
+
+                    if init == arg.init:
+                        out.write(" %.4f  0.0000 \n" % ((energy[final-1]-energy[init-1])*borh2ev) )
+                        out.write(" %.4f  %E \n" % ((energy[final-1]-energy[init-1])*borh2ev, states[j][2]))
+                        out.write(" %.4f  0.0000 \n" % ((energy[final-1]-energy[init-1])*borh2ev) )
                 out.close()
                 
             if arg.print == "curve" or arg.print == "all":
                 for j in range(len(states)):
                     init=states[j][0].astype(int)
                     final=states[j][1].astype(int)
-                    trans.append((energy[final-1]-energy[init-1])*borh2ev)
-                    trans.append(states[j][2])
+                    if init == arg.init:
+                        trans.append((energy[final-1]-energy[init-1])*borh2ev)
+                        trans.append(states[j][2])
                 trans=np.array(trans).reshape(-1,2)
                 
                 if arg.conv == "lorentzian":
@@ -212,6 +220,7 @@ def main():
                     gamma = 0.1240839
                     x,y = lorentzian(trans[:,0], trans[:,1], gamma, trans[0,0]-10, trans[0,0]+10 )
                     out.write("# E(eV) Osc. Str. (a.u.) -- %s, Lorentzian Curve spectrum \n" % logs[i])
+                    
                     for i in range(len(x)):
                         out.write("%s %s\n" % (x[i], y[i]))
                     out.close()
